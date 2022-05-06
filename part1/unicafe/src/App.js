@@ -5,7 +5,7 @@ const Button = ({text, setCount}) =>
 
 
 const StatisticLine = ({text, stat}) => 
-  <tr><td>{text}</td> <td>{stat}</td></tr>
+  <tr><td>{text}</td><td>{stat}</td></tr>
 
 
 const Statistics = ({goodText, neutralText, badText, good, bad, neutral}) =>
@@ -17,13 +17,15 @@ const Statistics = ({goodText, neutralText, badText, good, bad, neutral}) =>
     return <div>
       <h1>statistics</h1>
       <table>
-      <StatisticLine text={goodText} stat={good}/>
-      <StatisticLine text={neutralText} stat={neutral}/>
-      <StatisticLine text={badText} stat={bad}/>
+        <tbody>
+          <StatisticLine text={goodText} stat={good}/>
+          <StatisticLine text={neutralText} stat={neutral}/>
+          <StatisticLine text={badText} stat={bad}/>
 
-      <StatisticLine text="all" stat={total}/>
-      <StatisticLine text="average" stat={(good-bad)/(total)}/>
-      <StatisticLine text="positive" stat={((good)/(total) * 100) + "%"}/>
+          <StatisticLine text="all" stat={total}/>
+          <StatisticLine text="average" stat={(good-bad)/(total)}/>
+          <StatisticLine text="positive" stat={((good)/(total) * 100) + "%"}/>
+        </tbody>
       </table>
     </div>;
   }
