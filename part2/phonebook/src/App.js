@@ -1,44 +1,14 @@
-import { useState } from 'react'
-
-const PersonForm = ({name, nameSetter, book, bookSetter}) => {
-  const handleSubmit = (event) => 
-  {
-    event.preventDefault();
-
-    nameSetter("");
-
-    const newPerson = {name: name};
-    bookSetter(book.concat(newPerson));
-  };
-
-  const handleChange = (event) =>
-  {
-    nameSetter(event.target.value);
-  }
-  
-  return(
-    <>
-    <h2>Phonebook</h2>
-    <form onSubmit={handleSubmit}>
-        <div>
-          name: <input onChange={handleChange} value={name}/>
-        </div>
-        <div>
-          <button type="submit">add</button>
-        </div>
-    </form>
-    </>
-  );
-};
+import { useState } from 'react';
+import PersonForm from './PersonForm';
 
 const Numbers = ({book}) =>
 {
-  const personListing = book.map(({name}) => <p key={name}>{name}</p>);
+  const personListing = book.map(({name}) => <li key={name}>{name}</li>);
 
   return(
   <>
     <h2>Numbers</h2>
-    {personListing}
+    <ul>{personListing}</ul>
   </>
   );
 };
@@ -46,8 +16,8 @@ const Numbers = ({book}) =>
 const App = () => {
   const [persons, setPersons] = useState([
     { name: 'Arto Hellas' }
-  ]) 
-  const [newName, setNewName] = useState('')
+  ]); 
+  const [newName, setNewName] = useState('');
 
   return (
     <div>
@@ -55,7 +25,7 @@ const App = () => {
           book={persons} bookSetter={setPersons}/>
       <Numbers book={persons}/>
     </div>
-  )
-}
+  );
+};
 
 export default App;
