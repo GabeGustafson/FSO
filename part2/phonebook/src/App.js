@@ -1,17 +1,21 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import PersonForm from './components/PersonForm';
 import Numbers from './components/Numbers';
 import SearchFilter from './components/SearchFilter';
+import axios from 'axios';
 
 const App = () => {
-    const initialPersons = [
-        { name: 'Arto Hellas', number: '040-123456', id: 1 },
-        { name: 'Ada Lovelace', number: '39-44-5323523', id: 2 },
-        { name: 'Dan Abramov', number: '12-43-234345', id: 3 },
-        { name: 'Mary Poppendieck', number: '39-23-6423122', id: 4 }
-    ];
+    // set up effect for getting initial "persons" data once
+    const axiosHook = () => {
+        axios
+            .get("http://localhost:3001/persons")
+            .then(response => {
+                setPersons(response.data);
+            });
+    };
+    useEffect(axiosHook, []);
 
-    const [persons, setPersons] = useState(initialPersons);
+    const [persons, setPersons] = useState([]);
 
     const [newName, setNewName] = useState('');
     const [newNumber, setNewNumber] = useState('');
