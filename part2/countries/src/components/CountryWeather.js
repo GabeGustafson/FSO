@@ -1,24 +1,11 @@
-import axios from "axios";
-
-const CountryWeather = ({country, setCountryWeather}) => {
-    // get weather for the given country
-    const latlng = country.capitalInfo.latlng; 
-
-    const getWeatherHook = () => {
-        axios
-            .get(`https://api.openweathermap.org/data/3.0/onecall?
-            lat=${latlng[0]}
-            &lon=${latlng[1]}
-            &exclude=minutely,hourly,daily,alerts
-            &appid=${process.env.REACT_APP_API_KEY}`)
-            .then((response) => {
-                setCountryWeather(); // TODO
-            });
-    };
-
-    useEffect(getWeatherHook);
-
-    return <></>
+const CountryWeather = ({country, countryWeather}) => {
+    // get weather for the given country, if it's different than the last
+    return (
+    <div>
+        <h2>Weather in {country.capital}</h2>
+        <p>Temperature: {countryWeather.temp} Celsius</p>
+        <p>Wind: {countryWeather.wind} m/s</p>
+    </div>);
 }
 
 export default CountryWeather;
