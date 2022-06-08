@@ -8,7 +8,7 @@ function App() {
     const [searchWord, setSearchWord] = useState(''); // search word for filtering countries
     const [initialCountries, setInitialCountries] = useState([]); // whole list of countries
     const [filteredCountries, setFilteredCountries] = useState([]); // filtered list of countries
-    const [countryWeather, setCountryWeather] = useState({}); // weather for an individual country
+    const [countryWeather, setCountryWeather] = useState(null); // weather for an individual country
 
     // get info based on state
     const numCountries = filteredCountries.length;
@@ -34,22 +34,20 @@ function App() {
         {
             const country = filteredCountries[0];
             const latlng = country.capitalInfo.latlng;
-            const requestURL = `https://api.openweathermap.org/data/3.0/onecall` +
-            `?lat=${latlng[0]}&lon=${latlng[1]}` +
+            const requestURL = `https://api.openweathermap.org/data/2.5/weather` +
+            `?lat=${latlng[0]}` +
+            `&lon=${latlng[1]}` +
             `&units=imperial` +
-            `&exclude=hourly,daily,minutely,alerts` +
             `&appid=${process.env.REACT_APP_API_KEY}`;
 
-            console.log(requestURL);
             axios
                 .get(requestURL)
                 .then((response) => {
-                    console.log(response.data);
-                    setCountryWeather(response.data.current);
+                    setCountryWeather(response.data);
                 });
         }
     };
-    useEffect(getWeatherHook);
+    useEffect(getWeatherHook, [numCountries, filteredCountries]);
 
     return (
         <>

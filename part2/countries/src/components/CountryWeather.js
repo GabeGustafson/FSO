@@ -1,11 +1,21 @@
 const CountryWeather = ({country, countryWeather}) => {
-    // get weather for the given country, if it's different than the last
-    return (
-    <div>
-        <h2>Weather in {country.capital}</h2>
-        <p>Temperature: {countryWeather.temp} Celsius</p>
-        <p>Wind: {countryWeather.wind} m/s</p>
-    </div>);
+
+    // show weather for the given country
+    if(countryWeather !== null)
+    {
+        return (
+        <div>
+            <h2>Weather in {country.capital}</h2>
+            <p>Temperature: {countryWeather.main.temp} Celsius</p>
+            <img src={`https://openweathermap.org/img/wn/${countryWeather.weather[0].icon}@2x.png`}
+                alt='weather'/>
+            <p>Wind: {countryWeather.wind.speed} m/s</p>
+        </div>);
+    }
+    else
+    {
+        return <></>;
+    }
 }
 
 export default CountryWeather;
