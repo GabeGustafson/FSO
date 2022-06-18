@@ -1,20 +1,51 @@
+import personService from "../personService";
+
 const PersonForm = ({ name, nameSetter, number, numberSetter, book, bookSetter }) => {
     const handleSubmit = (event) => {
         event.preventDefault();
 
-        // if the name is unique, add the person
-        if (book.every(p => p.name !== name)) {
-            // reset input fields
-            nameSetter("");
-            numberSetter("");
+        const newPerson = { name: name, number: number };
 
-            // create and add the new person
-            const newPerson = { name: name, number: number };
-            bookSetter(book.concat(newPerson));
+        const foundIndex = book.findIndex(p => p.name === name)
+
+        // if the name is new, create the person
+        if (foundIndex === -1) {
+            // create the new person in the server
+            personService
+                .createPerson(newPerson)
+                .then(returnedPerson => { // create new person locally
+                    // reset input fields
+                    nameSetter("");
+                    numberSetter("");
+
+                    // create the returned person locally 
+                    // NOTE: this saves the json-server assigned id locally
+                    if (returnedPerson !== null)
+                        bookSetter(book.concat(returnedPerson));
+                });
         }
-        else // otherwise, alert the user
+        else // otherwise, ask the user if they wish to overwrite the person
         {
-            alert(`${name} is already in the phonebook!`);
+            const replaceChosen = window.confirm(`${name} is already in the phonebook. Do you wish to replace their number?`);
+
+            if(replaceChosen)
+            {
+                const foundId = book[foundIndex].id;
+
+                // update the person in the server
+                personService
+                    .updatePerson(foundId, newPerson)
+                    .then(returnedPerson =>  
+                        {
+                            // reset input fields
+                            nameSetter("");
+                            numberSetter("");
+
+                            // update the person locally (use json-server's assigned id)
+                            const newBook = book.map(p => (p.id !== foundId) ? p : returnedPerson);
+                            bookSetter(newBook);
+                        });
+            }
         }
     };
 

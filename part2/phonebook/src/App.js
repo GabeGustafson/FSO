@@ -2,18 +2,20 @@ import { useEffect, useState } from 'react';
 import PersonForm from './components/PersonForm';
 import Numbers from './components/Numbers';
 import SearchFilter from './components/SearchFilter';
-import axios from 'axios';
+import personService from './personService';
 
 const App = () => {
     // set up effect for getting initial "persons" data once
-    const axiosHook = () => {
-        axios
-            .get("http://localhost:3001/persons")
-            .then(response => {
-                setPersons(response.data);
+    const personsHook = () => {
+        personService.getPersons()
+            .then(obtainedPersons => {
+                if (obtainedPersons !== null)
+                    setPersons(obtainedPersons);
+                else
+                    alert('Could not obtain persons. Please refresh.');
             });
     };
-    useEffect(axiosHook, []);
+    useEffect(personsHook, []);
 
     const [persons, setPersons] = useState([]);
 
@@ -31,7 +33,8 @@ const App = () => {
                 number={newNumber} numberSetter={setNewNumber}
                 book={persons} bookSetter={setPersons} />
 
-            <Numbers book={persons} searchName={searchName}/>
+            <Numbers book={persons} searchName={searchName} setPersons={setPersons}
+            persons={persons}/>
         </div>
     );
 };
