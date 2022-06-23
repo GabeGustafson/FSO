@@ -19,7 +19,7 @@ const Numbers = ({ book, searchName, setPersons, persons, setMessage }) => {
         book // filter the people by the search-name query
             .filter(({name}) => name.toLowerCase().includes(searchName.toLowerCase()))
             .map(({ id, name, number }) => { // create list items with delete buttons for the filtered people
-                return <Number key={name} id={id} personName={name} number={number}
+                return <Number key={id} id={id} personName={name} number={number}
                         setPersons={setPersons} persons={persons} 
                         setMessage ={setMessage}/>
             });     
