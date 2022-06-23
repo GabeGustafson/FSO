@@ -1,16 +1,14 @@
-// handles database promise creation
-import axios from 'axios';
+// Uses service to handle database promise creation
+// and handles updates to components accordingly
+
+import personService from "./personService";
 const baseUrl = 'http://localhost:3001/persons'
 
 // returns promise with array of all people or null if unobtainable
-const getPersons = () => {
-    return (axios
-        .get(baseUrl)
-        .then(response => {
-            return response.data;}
-            )
-        .catch(error => null)
-        );
+const handleGetPersons = () => {
+    const getPromise =  personService.getPersons;
+
+    return getPromise;
 };
 
 // returns promise with the new person added to the server or
@@ -19,7 +17,7 @@ const createPerson = (newPerson) => {
     return (axios  
         .post(baseUrl, newPerson)
         .then(response => response.data)
-        .catch(_ => null)
+        .catch(error => null)
         );
 };
 

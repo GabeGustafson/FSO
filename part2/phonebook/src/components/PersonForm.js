@@ -1,6 +1,8 @@
 import personService from "../personService";
+import messageUpdater from "../messageUpdater";
 
-const PersonForm = ({ name, nameSetter, number, numberSetter, book, bookSetter }) => {
+const PersonForm = ({ name, nameSetter, number, numberSetter, 
+    book, bookSetter, setMessage }) => {
     const handleSubmit = (event) => {
         event.preventDefault();
 
@@ -14,14 +16,21 @@ const PersonForm = ({ name, nameSetter, number, numberSetter, book, bookSetter }
             personService
                 .createPerson(newPerson)
                 .then(returnedPerson => { // create new person locally
-                    // reset input fields
-                    nameSetter("");
-                    numberSetter("");
-
                     // create the returned person locally 
                     // NOTE: this saves the json-server assigned id locally
                     if (returnedPerson !== null)
+                    {
+                        // reset input fields
+                        nameSetter("");
+                        numberSetter("");
                         bookSetter(book.concat(returnedPerson));
+
+                        messageUpdater.update(setMessage, true, `Added ${returnedPerson.name}`);
+                    }
+                    else // set error message
+                    {
+
+                    }
                 });
         }
         else // otherwise, ask the user if they wish to overwrite the person
@@ -44,6 +53,8 @@ const PersonForm = ({ name, nameSetter, number, numberSetter, book, bookSetter }
                             // update the person locally (use json-server's assigned id)
                             const newBook = book.map(p => (p.id !== foundId) ? p : returnedPerson);
                             bookSetter(newBook);
+
+                            messageUpdater.update(setMessage, true, `Updated ${returnedPerson.name}`);
                         });
             }
         }

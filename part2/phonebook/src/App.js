@@ -3,6 +3,7 @@ import PersonForm from './components/PersonForm';
 import Numbers from './components/Numbers';
 import SearchFilter from './components/SearchFilter';
 import personService from './personService';
+import InfoMessage from './components/InfoMessage';
 
 const App = () => {
     // set up effect for getting initial "persons" data once
@@ -23,18 +24,23 @@ const App = () => {
     const [newNumber, setNewNumber] = useState('');
     const [searchName, setSearchName] = useState('');
 
+    const [message, setMessage] = useState({success:false, text:null});
+
     return (
         <div>
             <h2>Phonebook</h2>
+            <InfoMessage message={message}/>
+
             <SearchFilter searchName={searchName} setSearchName={setSearchName}/>
 
             <PersonForm
                 name={newName} nameSetter={setNewName}
                 number={newNumber} numberSetter={setNewNumber}
-                book={persons} bookSetter={setPersons} />
+                book={persons} bookSetter={setPersons} 
+                setMessage={setMessage}/>
 
             <Numbers book={persons} searchName={searchName} setPersons={setPersons}
-            persons={persons}/>
+            persons={persons} setMessage={setMessage}/>
         </div>
     );
 };
